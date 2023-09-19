@@ -106,7 +106,7 @@ public partial class MainViewModel
                         sbHtml.AppendLine($@"			<name>{zAvgSub.ToString("F2")}</name>");
                         sbHtml.AppendLine(@"			<styleUrl>#" + GetColorStyleID((double)zAvgSub * -1, ColorValList) + "</styleUrl>");
                         sbHtml.AppendLine(@"			<Polygon>");
-                        sbHtml.AppendLine(@"			    <altitudeMode>absolute</altitudeMode>");
+                        //sbHtml.AppendLine(@"");
                         sbHtml.AppendLine(@"				<outerBoundaryIs>");
                         sbHtml.AppendLine(@"				    <LinearRing>");
                         sbHtml.AppendLine(@"				        <coordinates>");
@@ -157,7 +157,7 @@ public partial class MainViewModel
                                         sbHtml.AppendLine($@"			<name>{zAvgSubSub.ToString("F2")}</name>");
                                         sbHtml.AppendLine(@"			<styleUrl>#" + GetColorStyleID((double)zAvgSubSub * -1, ColorValList) + "</styleUrl>");
                                         sbHtml.AppendLine(@"			<Polygon>");
-                                        sbHtml.AppendLine(@"			    <altitudeMode>absolute</altitudeMode>");
+                                        //sbHtml.AppendLine(@"");
                                         sbHtml.AppendLine(@"				<outerBoundaryIs>");
                                         sbHtml.AppendLine(@"				    <LinearRing>");
                                         sbHtml.AppendLine(@"				        <coordinates>");
@@ -204,7 +204,7 @@ public partial class MainViewModel
                                                     sbHtml.AppendLine($@"			<name>{zAvgSubSubSub.ToString("F2")}</name>");
                                                     sbHtml.AppendLine(@"			<styleUrl>#" + GetColorStyleID((double)zAvgSubSubSub * -1, ColorValList) + "</styleUrl>");
                                                     sbHtml.AppendLine(@"			<Polygon>");
-                                                    sbHtml.AppendLine(@"			    <altitudeMode>absolute</altitudeMode>");
+                                                    //sbHtml.AppendLine(@"");
                                                     sbHtml.AppendLine(@"				<outerBoundaryIs>");
                                                     sbHtml.AppendLine(@"				    <LinearRing>");
                                                     sbHtml.AppendLine(@"				        <coordinates>");

@@ -157,7 +157,7 @@ public partial class MainViewModelTest
 
         DirectoryInfo startDir = new DirectoryInfo("E:\\Bathymetry\\CHS_High_Res\\Data\\sub_xyz\\");
 
-        string fileNameToCreate = "Bonaventure.xyz";
+        string fileNameToCreate = "Gaspe.xyz";
         string kmlOfPolygon = "";
 
         StringBuilder sb = new StringBuilder();
@@ -174,7 +174,7 @@ public partial class MainViewModelTest
         sb.AppendLine($@"			<outerBoundaryIs>");
         sb.AppendLine($@"				<LinearRing>");
         sb.AppendLine($@"					<coordinates>");
-        sb.AppendLine($@"						-65.81403556857194,48.14856485327939,0 -65.89762443345253,48.01025961702847,0 -65.44729971247362,47.90194239119844,0 -65.37997549528806,48.01127565191857,0 -65.46870540328253,48.09450396755406,0 -65.81403556857194,48.14856485327939,0 ");
+        sb.AppendLine($@"						-64.34905561301321,48.75298180532126,0 -64.25490923616539,48.81474992065815,0 -64.50106254480318,48.91842418973383,0 -64.62543857093259,48.90719801751963,0 -64.61494894824321,48.81723049009093,0 -64.46339565091488,48.75257287267696,0 -64.34905561301321,48.75298180532126,0 ");
         sb.AppendLine($@"					</coordinates>");
         sb.AppendLine($@"				</LinearRing>");
         sb.AppendLine($@"			</outerBoundaryIs>");
