@@ -10,15 +10,17 @@ public partial class MainViewModel
         #region checking function parameters
         if (startDir == null)
         {
-            Log = "Error: startDir == null";
-            Status = "Error: startDir == null";
+            Status = "startDir == null";
+            Log = Status;
+
             return;
         }
 
         if (!startDir.Exists)
         {
-            Log = $"Error: startDir does not exist [{startDir.FullName}]";
-            Status = $"Error: startDir does not exist [{startDir.FullName}]";
+            Status = $"startDir does not exist [{startDir.FullName}]";
+            Log = Status;
+            
             return;
         }
 
@@ -26,17 +28,20 @@ public partial class MainViewModel
 
         if (fiXYZ.Exists)
         {
-            try
-            {
-                fiXYZ.Delete();
-            }
-            catch (Exception ex)
-            {
-                Log = $"Error: Could not delete File [{fiXYZ.FullName}] -- exception: {ex.Message}";
-                Status = $"Error: Could not delete File [{fiXYZ.FullName}] -- exception: {ex.Message}";
-                return;
-            }
+            Status = $"File already exist [{startDir.FullName}]";
+            Log = Status;
+                
+            return;
         }
+
+        if (fiXYZ.Extension != ".xyz")
+        {
+            Status = $"File extension is not .xyz [{startDir.FullName}]";
+            Log = Status;
+                
+            return;
+        }
+
         #endregion checking function parameters
 
         #region  reading the xyz files coordinates

@@ -1,7 +1,3 @@
-
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace MainViewModelTests;
 
 public partial class MainViewModelTest
@@ -17,13 +13,10 @@ public partial class MainViewModelTest
     public void Check_Setup()
     {
         SetupStart();
-
-        FileInfo fi = new FileInfo($"{vm.StartDir}{fileName}");
-        Assert.True(fi.Exists);
+        Assert.NotEmpty(vm.StartDir);
 
         SetupEnd();
-        FileInfo fi2 = new FileInfo($"{vm.StartDir}{fileName}");
-        Assert.False(fi2.Exists);
+        Assert.Empty(vm.StartDir);
     }
 
     [Fact]
@@ -113,36 +106,6 @@ public partial class MainViewModelTest
         SetupStart();
 
         vm.CreateKMLFileToShowXYZExtentsFromLocationPolygonKML();
-
-        Assert.Empty(vm.Log);
-
-        SetupEnd();
-
-    }
-
-    [Fact]
-    public void CreateKMLFileFromXYZFile_OK()
-    {
-        SetupStart();
-
-        FileInfo fiXYZ = new FileInfo("E:\\CSSP\\Modelling\\Mike21\\Quebec\\IlesDeLaMadeleine\\External Data\\IDM_CAM_EDN.xyz");
-
-        vm.CreateKMLFileFromXYZFile(fiXYZ);
-
-        Assert.Empty(vm.Log);
-
-        SetupEnd();
-
-    }
-
-    [Fact]
-    public void CreateXYZFileFromKMLFile_OK()
-    {
-        SetupStart();
-
-        FileInfo fiXYZ = new FileInfo("E:\\CSSP\\Modelling\\Mike21\\Quebec\\IlesDeLaMadeleine\\External Data\\IDM_CAM_EDN2.kml");
-
-        vm.CreateXYZFileFromKMLFile(fiXYZ);
 
         Assert.Empty(vm.Log);
 

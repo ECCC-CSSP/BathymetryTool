@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="Home"
+        Title="Bathymetry Tools"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

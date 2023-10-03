@@ -8,7 +8,17 @@ public partial class MainViewModel
 
         if (!fiKML.Exists)
         {
-            Log = $"File does not exist [{fiKML.FullName}]";
+            Status = $"File does not exist [{fiKML.FullName}]";
+            Log = Status;
+
+            return;
+        }
+
+        FileInfo fiXYZ = new FileInfo(fiKML.FullName.Replace(".kml", ".xyz"));
+        if (fiXYZ.Exists)
+        {
+            Status = $"File already exist [{fiXYZ.FullName}]";
+            Log = Status;
 
             return;
         }
@@ -49,8 +59,9 @@ public partial class MainViewModel
 
                                 if (pointTxtList.Count != 3)
                                 {
-                                    Log = $"Error: pointTxtList.Count != 3";
                                     Status = "Error: pointTxtList.Count != 3";
+                                    Log = Status;
+
                                     return;
                                 }
 
@@ -72,8 +83,9 @@ public partial class MainViewModel
 
                                 if (pointTxtList.Count != 3)
                                 {
-                                    Log = "Error: pointTxtList.Count != 3";
                                     Status = "Error: pointTxtList.Count != 3";
+                                    Log = Status;
+
                                     return;
                                 }
 
@@ -84,8 +96,9 @@ public partial class MainViewModel
                 }
             }
         }
-        FileInfo fi = new FileInfo(fiKML.FullName.Replace(".kml", ".xyz"));
-        StreamWriter sw = fi.CreateText();
+
+        //FileInfo fi = new FileInfo(fiKML.FullName.Replace(".kml", ".xyz"));
+        StreamWriter sw = fiXYZ.CreateText();
         sw.Write(sb.ToString());
         sw.Close();
 

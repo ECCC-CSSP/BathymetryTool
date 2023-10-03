@@ -5,11 +5,44 @@
              x:DataType="viewmodel:MainViewModel"
              x:Class="BathymetryToolMAUI.MainPage">
 
-    <ScrollView
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Text="Bathymetry Tool"
+                FontSize="32"
+                HorizontalOptions="Center"
+                Grid.Row="0"
+                Grid.Column="0" />
+
+            <ScrollView
+                Grid.Row="1"
+                Grid.Column="0"
                 HorizontalScrollBarVisibility="Always"
-                VerticalScrollBarVisibility="Always" 
-                IsEnabled="True">
-        <VerticalStackLayout
+                VerticalScrollBarVisibility="Always">
+                <Editor
+                    Text="{Binding Log}"
+                    Background="White"
+                    IsEnabled="True"
+                    IsTextPredictionEnabled="True"
+                    CharacterSpacing="2"
+                    Placeholder="Input your puzzle here"
+                    PlaceholderColor="Black"
+                    FontSize="14"
+                    FontFamily="Monospace" />
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+    
+    <!--<VerticalStackLayout           
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
@@ -25,7 +58,7 @@
                 FontSize="32"
                 HorizontalOptions="Center" />
             <Button 
-                Text="Testing"
+                Text="Create XYZ from KML"
                 Command="{Binding SayHelloCommand}"
                 SemanticProperties.Hint="Testing semantic properties"
                 HorizontalOptions="Center" />
@@ -50,7 +83,6 @@
                     FontFamily="Monospace" />
 
             </ScrollView>
-        </VerticalStackLayout>
-    </ScrollView>
+        </VerticalStackLayout>-->
 
 </ContentPage>
