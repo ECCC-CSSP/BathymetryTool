@@ -5,7 +5,10 @@
              x:DataType="viewmodel:MainViewModel"
              x:Class="BathymetryToolMAUI.MainPage">
 
-    <ScrollView>
+    <ScrollView
+                HorizontalScrollBarVisibility="Always"
+                VerticalScrollBarVisibility="Always" 
+                IsEnabled="True">
         <VerticalStackLayout
             Spacing="25"
             Padding="30,0"
@@ -21,8 +24,6 @@
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
                 HorizontalOptions="Center" />
-
-
             <Button 
                 Text="Testing"
                 Command="{Binding SayHelloCommand}"
@@ -31,18 +32,17 @@
 
             <ScrollView 
                 HeightRequest="300"
+                MaximumHeightRequest="300"
                 HorizontalScrollBarVisibility="Always"
                 VerticalScrollBarVisibility="Always" 
                 WidthRequest="380" 
-                IsEnabled="True" 
-                ZIndex="2000">
+                IsEnabled="True">
 
                 <Editor
                     Text="{Binding Log}"
                     Background="White"                
                     IsEnabled="True"
                     IsTextPredictionEnabled="True"
-                    TextTransform="Uppercase"
                     CharacterSpacing="2"
                     Placeholder="Input your puzzle here"
                     PlaceholderColor="Black"

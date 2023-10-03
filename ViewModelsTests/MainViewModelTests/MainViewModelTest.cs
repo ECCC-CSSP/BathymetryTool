@@ -125,7 +125,7 @@ public partial class MainViewModelTest
     {
         SetupStart();
 
-        FileInfo fiXYZ = new FileInfo("E:\\Bathymetry\\CHS_High_Res\\Data\\sub_xyz\\Grand Manan\\xyz\\44_5-66_7_422.xyz");
+        FileInfo fiXYZ = new FileInfo("E:\\CSSP\\Modelling\\Mike21\\Quebec\\IlesDeLaMadeleine\\External Data\\IDM_CAM_EDN.xyz");
 
         vm.CreateKMLFileFromXYZFile(fiXYZ);
 
@@ -140,7 +140,7 @@ public partial class MainViewModelTest
     {
         SetupStart();
 
-        FileInfo fiXYZ = new FileInfo("E:\\Bathymetry\\CHS_High_Res\\Data\\sub_xyz\\Grand Manan\\kml\\44_5-66_7_422.kml");
+        FileInfo fiXYZ = new FileInfo("E:\\CSSP\\Modelling\\Mike21\\Quebec\\IlesDeLaMadeleine\\External Data\\IDM_CAM_EDN2.kml");
 
         vm.CreateXYZFileFromKMLFile(fiXYZ);
 
@@ -186,6 +186,38 @@ public partial class MainViewModelTest
         kmlOfPolygon = sb.ToString();
 
         vm.CreateOneXYZFileFromManyXYZFileWithinAPolygon(startDir, fileNameToCreate, kmlOfPolygon);
+
+        Assert.Empty(vm.Log);
+
+        SetupEnd();
+
+    }
+
+    [Fact]
+    public void FixKMLFileByRemovingAbsoluteLine_OK()
+    {
+        SetupStart();
+
+        DirectoryInfo startDir = new DirectoryInfo("E:\\Bathymetry\\CHS_High_Res\\Data\\sub_xyz\\");
+
+        vm.FixKMLFileByRemovingAbsoluteLine(startDir);
+
+        Assert.Empty(vm.Log);
+
+        SetupEnd();
+
+    }
+
+    [Fact]
+    public void RemoveHighValuesFromXYZFile_OK()
+    {
+        SetupStart();
+
+        FileInfo fiXYZ = new FileInfo("E:\\Bathymetry\\CHS_High_Res\\Data\\sub_xyz\\Gaspé - Paspébiac\\xyz\\48_8-64_5_6083.xyz");
+
+        double highValue = 2.0;
+
+        vm.RemoveHighValuesFromXYZFile(fiXYZ, highValue);
 
         Assert.Empty(vm.Log);
 

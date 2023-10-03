@@ -62,7 +62,7 @@ public partial class MainViewModel
                             float lat = latList.Average();
                             float lng = lngList.Average();
 
-                            sb.AppendLine(lng.ToString("F6") + " " + lat.ToString("F6") + " " + depth.ToString("F2"));
+                            sb.AppendLine(lng.ToString("F6") + "," + lat.ToString("F6") + "," + depth.ToString("F2"));
                         }
                         else
                         {
@@ -77,7 +77,7 @@ public partial class MainViewModel
                                     return;
                                 }
 
-                                sb.AppendLine(float.Parse(pointTxtList[0]).ToString("F6") + " " + float.Parse(pointTxtList[1]).ToString("F6") + " " + depth.ToString("F2"));
+                                sb.AppendLine(float.Parse(pointTxtList[0]).ToString("F6") + "," + float.Parse(pointTxtList[1]).ToString("F6") + "," + depth.ToString("F2"));
                             }
                         }
                     }

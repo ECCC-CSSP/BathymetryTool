@@ -11,36 +11,39 @@ public partial class MainViewModel
             return;
         }
 
-        LatLngFileCount latLngFileCount = GetLatLngFileCountFromFileInfo(fiXYZ);
+        List<ColorVal> ColorValList = new List<ColorVal>();
+        ColorValList = FillColorValues();
+
+        //LatLngFileCount latLngFileCount = GetLatLngFileCountFromFileInfo(fiXYZ);
 
         StringBuilder sb = new StringBuilder();
 
         CreateTopKMLPart(sb, fiXYZ.DirectoryName + "");
-        sb.AppendLine($"	<Folder>");
-        sb.AppendLine($"		<name>{fiXYZ.DirectoryName + ""}</name>");
+        //sb.AppendLine($"	<Folder>");
+        //sb.AppendLine($"		<name>{fiXYZ.DirectoryName + ""}</name>");
 
 
-        sb.AppendLine($"		<Placemark>");
-        sb.AppendLine($"			<name>{latLngFileCount.ValCount}</name>");
-        sb.AppendLine($"			<styleUrl>#m_ylw-pushpin</styleUrl>");
-        sb.AppendLine($"			<Point>");
-        sb.AppendLine($"				<coordinates>{latLngFileCount.Lng1},{latLngFileCount.Lat1},0</coordinates>");
-        sb.AppendLine($"			</Point>");
-        sb.AppendLine($"		</Placemark>");
+        //sb.AppendLine($"		<Placemark>");
+        //sb.AppendLine($"			<name>{latLngFileCount.ValCount}</name>");
+        //sb.AppendLine($"			<styleUrl>#m_ylw-pushpin</styleUrl>");
+        //sb.AppendLine($"			<Point>");
+        //sb.AppendLine($"				<coordinates>{latLngFileCount.Lng1},{latLngFileCount.Lat1},0</coordinates>");
+        //sb.AppendLine($"			</Point>");
+        //sb.AppendLine($"		</Placemark>");
 
-        sb.AppendLine($"		<Placemark>");
-        sb.AppendLine($"			<name>Untitled Polygon</name>");
-        sb.AppendLine($"			<styleUrl>#m_ylw-pushpin</styleUrl>");
-        sb.AppendLine($"			<Polygon>");
-        sb.AppendLine($"				<outerBoundaryIs>");
-        sb.AppendLine($"					<LinearRing>");
-        sb.AppendLine($"						<coordinates>");
-        sb.AppendLine($"							{latLngFileCount.Lng1},{latLngFileCount.Lat1},0 {latLngFileCount.Lng2},{latLngFileCount.Lat1},0 {latLngFileCount.Lng2},{latLngFileCount.Lat2},0 {latLngFileCount.Lng1},{latLngFileCount.Lat2},0 {latLngFileCount.Lng1},{latLngFileCount.Lat1},0 ");
-        sb.AppendLine($"						</coordinates>");
-        sb.AppendLine($"					</LinearRing>");
-        sb.AppendLine($"				</outerBoundaryIs>");
-        sb.AppendLine($"			</Polygon>");
-        sb.AppendLine($"		</Placemark>");
+        //sb.AppendLine($"		<Placemark>");
+        //sb.AppendLine($"			<name>Untitled Polygon</name>");
+        //sb.AppendLine($"			<styleUrl>#m_ylw-pushpin</styleUrl>");
+        //sb.AppendLine($"			<Polygon>");
+        //sb.AppendLine($"				<outerBoundaryIs>");
+        //sb.AppendLine($"					<LinearRing>");
+        //sb.AppendLine($"						<coordinates>");
+        //sb.AppendLine($"							{latLngFileCount.Lng1},{latLngFileCount.Lat1},0 {latLngFileCount.Lng2},{latLngFileCount.Lat1},0 {latLngFileCount.Lng2},{latLngFileCount.Lat2},0 {latLngFileCount.Lng1},{latLngFileCount.Lat2},0 {latLngFileCount.Lng1},{latLngFileCount.Lat1},0 ");
+        //sb.AppendLine($"						</coordinates>");
+        //sb.AppendLine($"					</LinearRing>");
+        //sb.AppendLine($"				</outerBoundaryIs>");
+        //sb.AppendLine($"			</Polygon>");
+        //sb.AppendLine($"		</Placemark>");
 
         using (StreamReader sr = new StreamReader($"{fiXYZ.FullName}"))
         {
@@ -61,18 +64,53 @@ public partial class MainViewModel
                 double y = double.Parse(parts[1], CultureInfo.InvariantCulture);
                 double z = double.Parse(parts[2], CultureInfo.InvariantCulture);
 
-                sb.AppendLine($"		<Placemark>");
-                sb.AppendLine($"			<name>{z}</name>");
-                sb.AppendLine($"			<styleUrl>#m_ylw-pushpin</styleUrl>");
-                sb.AppendLine($"			<Point>");
-                sb.AppendLine($"				<coordinates>{x},{y},{0}</coordinates>");
-                sb.AppendLine($"			</Point>");
-                sb.AppendLine($"		</Placemark>");
+                //sb.AppendLine($"		<Placemark>");
+                //sb.AppendLine($"			<name>{z}</name>");
+                //sb.AppendLine($"			<styleUrl>#m_ylw-pushpin</styleUrl>");
+                //sb.AppendLine($"			<Point>");
+                //sb.AppendLine($"				<coordinates>{x},{y},{0}</coordinates>");
+                //sb.AppendLine($"			</Point>");
+                //sb.AppendLine($"		</Placemark>");
+
+                float factor = 1.0f;
+
+                //if (z < -5)
+                //{
+                //    factor = 0.0005f;
+                //}
+                //else 
+                if (z < -2)
+                {
+                    factor = 0.0001f;
+                }
+                else
+                {
+                    factor = 0.00005f;
+                }
+
+                sb.AppendLine(@"		<Placemark>");
+                sb.AppendLine($@"			<name>{z.ToString("F2")}</name>");
+                sb.AppendLine(@"			<styleUrl>#" + GetColorStyleID((double)z * -1, ColorValList) + "</styleUrl>");
+                sb.AppendLine(@"			<Polygon>");
+                sb.AppendLine(@"				<outerBoundaryIs>");
+                sb.AppendLine(@"				    <LinearRing>");
+                sb.AppendLine(@"				        <coordinates>");
+                sb.Append($"{(x - factor).ToString("F6")},{(y - factor).ToString("F6")},0 ");
+                sb.Append($"{(x + factor).ToString("F6")},{(y - factor).ToString("F6")},0 ");
+                sb.Append($"{(x + factor).ToString("F6")},{(y + factor).ToString("F6")},0 ");
+                sb.Append($"{(x - factor).ToString("F6")},{(y + factor).ToString("F6")},0 ");
+                sb.Append($"{(x - factor).ToString("F6")},{(y - factor).ToString("F6")},0 ");
+                sb.AppendLine();
+                sb.AppendLine(@"			          	</coordinates>");
+                sb.AppendLine(@"				    </LinearRing>");
+                sb.AppendLine(@"				</outerBoundaryIs>");
+                sb.AppendLine(@"			</Polygon>");
+                sb.AppendLine(@"		</Placemark>");
 
             }
         }
 
-        sb.AppendLine($"	</Folder>");
+        //sb.AppendLine($"	</Folder>");
         sb.AppendLine($"</Document>");
         sb.AppendLine($"</kml>");
 
