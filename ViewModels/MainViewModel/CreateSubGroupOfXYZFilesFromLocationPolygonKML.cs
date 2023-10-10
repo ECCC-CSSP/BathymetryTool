@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace MainViewModels;
+﻿namespace MainViewModels;
 
 public partial class MainViewModel
 {
-    public void CreateSubGroupOfXYZFilesFromLocationPolygonKML()
+    public async Task CreateSubGroupOfXYZFilesFromLocationPolygonKMLAsync()
     {
         FileInfo fi = new FileInfo($"{StartDir}\\kml\\Location Polygons.kml");
 
@@ -47,7 +40,7 @@ public partial class MainViewModel
                         {
                             di.Create();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             return;
                         }
@@ -117,7 +110,7 @@ public partial class MainViewModel
                                         {
                                             FileInfo fiXYZ = new FileInfo($"{StartDir}\\sub_xyz\\{DirectoryName}\\{latLngFileCount.FileName}");
 
-                                            ReduceXYZFileToContainOnlyDataInLocationPolygon(fiXYZ, poly);
+                                            await ReduceXYZFileToContainOnlyDataInLocationPolygonAsync(fiXYZ, poly);
                                         }
                                         break;
                                     }

@@ -20,10 +20,10 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void Subdivide_OK()
+    public async Task SubdivideAsync_OK()
     {
         SetupStart();
-        vm.Subdivide();
+        await vm.SubdivideAsync();
 
         Assert.NotEmpty(vm.Log);
         Assert.Equal("Done...", vm.Status);
@@ -32,12 +32,12 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void Subdivide_Error_Directory_Not_Exist_OK()
+    public async Task SubdivideAsync_Error_Directory_Not_Exist_OK()
     {
         SetupStart();
 
         vm.StartDir = "E:\\Bathymetry\\CHS_High_Res\\\\Data\\NotThere\\";
-        vm.Subdivide();
+        await vm.SubdivideAsync();
 
         Assert.NotEmpty(vm.Log);
         Assert.StartsWith("Directory does not exist [", vm.Log);
@@ -88,11 +88,11 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void CreateSubGroupOfXYZFilesFromLocationPolygonKML_OK()
+    public async Task CreateSubGroupOfXYZFilesFromLocationPolygonKMLAsync_OK()
     {
         SetupStart();
 
-        vm.CreateSubGroupOfXYZFilesFromLocationPolygonKML();
+        await vm.CreateSubGroupOfXYZFilesFromLocationPolygonKMLAsync();
 
         Assert.Empty(vm.Log);
 
@@ -101,11 +101,11 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void CreateKMLToShowXYZExtentsFromLocationPolygonKML_OK()
+    public async Task CreateKMLToShowXYZExtentsFromLocationPolygonKMLAsync_OK()
     {
         SetupStart();
 
-        vm.CreateKMLFileToShowXYZExtentsFromLocationPolygonKML();
+        await vm.CreateKMLFileToShowXYZExtentsFromLocationPolygonKMLAsync();
 
         Assert.Empty(vm.Log);
 
@@ -114,7 +114,7 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void CreateOneXYZFileFromManyXYZFileWithinAPolygon_OK()
+    public async Task CreateOneXYZFileFromManyXYZFileWithinAPolygonTask_OK()
     {
         SetupStart();
 
@@ -148,7 +148,7 @@ public partial class MainViewModelTest
 
         kmlOfPolygon = sb.ToString();
 
-        vm.CreateOneXYZFileFromManyXYZFileWithinAPolygon(startDir, fileNameToCreate, kmlOfPolygon);
+        await vm.CreateOneXYZFileFromManyXYZFileWithinAPolygonAsync(startDir, fileNameToCreate, kmlOfPolygon);
 
         Assert.Empty(vm.Log);
 
@@ -157,13 +157,13 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void FixKMLFileByRemovingAbsoluteLine_OK()
+    public async Task FixKMLFileByRemovingAbsoluteLineAsync_OK()
     {
         SetupStart();
 
         DirectoryInfo startDir = new DirectoryInfo("E:\\Bathymetry\\CHS_High_Res\\Data\\sub_xyz\\");
 
-        vm.FixKMLFileByRemovingAbsoluteLine(startDir);
+        await vm.FixKMLFileByRemovingAbsoluteLineAsync(startDir);
 
         Assert.Empty(vm.Log);
 
@@ -172,7 +172,7 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void RemoveHighValuesFromXYZFile_OK()
+    public async Task RemoveHighValuesFromXYZFileAsync_OK()
     {
         SetupStart();
 
@@ -180,7 +180,7 @@ public partial class MainViewModelTest
 
         double highValue = 2.0;
 
-        vm.RemoveHighValuesFromXYZFile(fiXYZ, highValue);
+        await vm.RemoveHighValuesFromXYZFileAsync(fiXYZ, highValue);
 
         Assert.Empty(vm.Log);
 

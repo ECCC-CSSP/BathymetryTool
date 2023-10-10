@@ -1,10 +1,16 @@
-﻿global using CommunityToolkit.Mvvm.ComponentModel;
+﻿global using CommunityToolkit.Maui.Storage;
+global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
+global using Microsoft.Maui.ApplicationModel;
+global using Microsoft.Maui.Devices;
+global using Microsoft.Maui.Storage;
 global using System;
 global using System.Collections.Generic;
+global using System.Diagnostics;
 global using System.Globalization;
 global using System.IO;
 global using System.Linq;
 global using System.Text;
+global using System.Threading;
 global using System.Threading.Tasks;
 global using System.Xml.Linq;

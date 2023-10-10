@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace MainViewModels;
+﻿namespace MainViewModels;
 
 public partial class MainViewModel
 {
-    public void CreateKMLFileToShowXYZExtentsFromLocationPolygonKML()
+    public async Task CreateKMLFileToShowXYZExtentsFromLocationPolygonKMLAsync()
     {
         FileInfo fi = new FileInfo($"{StartDir}\\kml\\Location Polygons.kml");
 
@@ -44,7 +37,7 @@ public partial class MainViewModel
                         {
                             di.Create();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             return;
                         }
@@ -85,7 +78,7 @@ public partial class MainViewModel
                         {
                             diKML.Create();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             return;
                         }
@@ -250,7 +243,7 @@ public partial class MainViewModel
 
                     using (StreamWriter sw = fiKML.CreateText())
                     {
-                        sw.Write(sb.ToString());
+                        await sw.WriteAsync(sb.ToString());
                     }
                 }
             }

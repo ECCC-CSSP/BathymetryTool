@@ -5,84 +5,287 @@
              x:DataType="viewmodel:MainViewModel"
              x:Class="BathymetryToolMAUI.MainPage">
 
+    <VerticalStackLayout      
+            Spacing="5"
+            Padding="5,5">
 
-    <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <HorizontalStackLayout
+            Spacing="5"
+            Padding="5,5"
+            VerticalOptions="Center"
+            HorizontalOptions="FillAndExpand">
 
             <Label
-                Text="Bathymetry Tool"
-                FontSize="32"
-                HorizontalOptions="Center"
-                Grid.Row="0"
-                Grid.Column="0" />
+                Text="Start Directory:  "
+                FontSize="16"
+                VerticalOptions="Center"/>
 
-            <ScrollView
-                Grid.Row="1"
-                Grid.Column="0"
-                HorizontalScrollBarVisibility="Always"
-                VerticalScrollBarVisibility="Always">
-                <Editor
-                    Text="{Binding Log}"
-                    Background="White"
-                    IsEnabled="True"
-                    IsTextPredictionEnabled="True"
-                    CharacterSpacing="2"
-                    Placeholder="Input your puzzle here"
-                    PlaceholderColor="Black"
-                    FontSize="14"
-                    FontFamily="Monospace" />
-            </ScrollView>
-        </Grid>
-    </ContentPage.Content>
-    
-    <!--<VerticalStackLayout           
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
-
-            <Entry 
+            <Label 
                 Text="{Binding StartDir}"
-                FontSize="32"
-                HorizontalOptions="Center" />
+                FontSize="14"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand" 
+                BackgroundColor="Beige"/>
 
-            <Label
-                Text="{Binding Status}"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-            <Button 
-                Text="Create XYZ from KML"
-                Command="{Binding SayHelloCommand}"
-                SemanticProperties.Hint="Testing semantic properties"
-                HorizontalOptions="Center" />
+            <Button
+                Text="Change Start Directory"
+                Command="{Binding ChangeStartDirCommand}"
+                FontSize="14" />
 
-            <ScrollView 
-                HeightRequest="300"
-                MaximumHeightRequest="300"
-                HorizontalScrollBarVisibility="Always"
-                VerticalScrollBarVisibility="Always" 
-                WidthRequest="380" 
-                IsEnabled="True">
+            <Button
+                Text="Open File Explorer"
+                Command="{Binding OpenFileExplorerAtStartDirCommand}"
+                FontSize="14" />
 
-                <Editor
-                    Text="{Binding Log}"
-                    Background="White"                
-                    IsEnabled="True"
-                    IsTextPredictionEnabled="True"
-                    CharacterSpacing="2"
-                    Placeholder="Input your puzzle here"
-                    PlaceholderColor="Black"
+        </HorizontalStackLayout>
+
+        <Border BackgroundColor="LightGreen">
+            <VerticalStackLayout            
+                Spacing="5"
+                Padding="5,5">
+
+                <Label
+                    Text="Creating a single .xyz file with all data witin a Google Earth polygon"
+                    FontSize="20"
+                    VerticalOptions="Center"/>
+
+                <HorizontalStackLayout
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Editor
+                        WidthRequest="400"
+                        MaximumHeightRequest="50"
+                        Text="{Binding GoogleEarthPolygonText}"
+                        FontSize="14"
+                        VerticalOptions="Center"
+                        BackgroundColor="Beige"/>
+
+                    <Entry
+                        WidthRequest="220"
+                        Text="{Binding FileXYZWithinPolygonName}"
+                        FontSize="14"
+                        VerticalOptions="Center"
+                        BackgroundColor="Beige"/>
+
+                    <Button
+                        Text="Create the .xyz file"
+                        Command="{Binding CreateOneXYZFileFromManyXYZFileWithinAPolygonCommand}"
+                        FontSize="14" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Label
+                    Text="{Binding FileXYZWithinPolygonFullName}"
                     FontSize="14"
-                    FontFamily="Monospace" />
+                    VerticalOptions="Center"/>
+                </HorizontalStackLayout>
 
-            </ScrollView>
-        </VerticalStackLayout>-->
+                <HorizontalStackLayout
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Label
+                        Text="Status: "
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Text="{Binding StatusCreateXYZWithinPolygon}"
+                        SemanticProperties.HeadingLevel="Level1"
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+        </Border>
+
+        <Border BackgroundColor="Bisque">
+            <VerticalStackLayout            
+                Spacing="5"
+                Padding="5,5">
+
+                <Label
+                    Text="Creating .kml file from .xyz file"
+                    FontSize="20"
+                    VerticalOptions="Center"/>
+
+                <HorizontalStackLayout
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Label
+                        Text="{Binding FileXYZFullName}"
+                        FontSize="14"
+                        VerticalOptions="Center"
+                        BackgroundColor="Beige"/>
+
+                    <Button
+                        Text="Select .xyz file"
+                        Command="{Binding PickXYZFileToCreateKMLFileCommand}"
+                        FontSize="14" />
+
+                    <Button
+                        IsVisible="{Binding FileXYZSelected}"
+                        Text="Open .xyz file"
+                        Command="{Binding OpenXYZFileSelectedCommand}"
+                        FontSize="14" />
+
+                    <Button
+                        IsVisible="{Binding FileXYZSelected}"
+                        Text="Open File Explorer"
+                        Command="{Binding OpenFileExplorerAtXYZFileSelectedCommand}"
+                        FontSize="14" />
+
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout
+                    IsVisible="{Binding FileXYZSelected}"
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+                    
+                    <Label
+                        Text="{Binding FileKMLToCreateFromXYZFullName}"
+                        FontSize="14"
+                        VerticalOptions="Center"
+                        BackgroundColor="Beige"/>
+
+                    <Button
+                        Text="Create .kml file from .xyz file"
+                        Command="{Binding CreateKMLFileFromXYZFileCommand}"
+                        FontSize="14" />
+
+                    <Button
+                        IsVisible="{Binding FileKMLCreatedExist}"
+                        Text="Open .kml File"
+                        Command="{Binding OpenKMLFileCreatedCommand}"
+                        FontSize="14" />
+
+                </HorizontalStackLayout>
+                <HorizontalStackLayout
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Label
+                        Text="Status: "
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Text="{Binding StatusCreateKML}"
+                        SemanticProperties.HeadingLevel="Level1"
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+        </Border>
+
+        <Border BackgroundColor="LightBlue">
+            <VerticalStackLayout            
+                Spacing="5"
+                Padding="5,5">
+
+                <Label
+                    Text="Creating .xyz file from .kml file"
+                    FontSize="20"
+                    VerticalOptions="Center"/>
+
+                <HorizontalStackLayout
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Label
+                        Text="{Binding FileKMLFullName}"
+                        FontSize="14"
+                        VerticalOptions="Center"
+                        BackgroundColor="Beige"/>
+
+                    <Button
+                        Text="Select .kml file"
+                        Command="{Binding PickKMLFileToCreateXYZFileCommand}"
+                        FontSize="14" />
+
+                    <Button
+                        IsVisible="{Binding FileKMLSelected}"
+                        Text="Open .kml file"
+                        Command="{Binding OpenKMLFileSelectedCommand}"
+                        FontSize="14" />
+
+                    <Button
+                        IsVisible="{Binding FileKMLSelected}"
+                        Text="Open File Explorer"
+                        Command="{Binding OpenFileExplorerAtKMLFileSelectedCommand}"
+                        FontSize="14" />
+
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout
+                    IsVisible="{Binding FileKMLSelected}"
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Label
+                        Text="{Binding FileXYZToCreateFromKMLFullName}"
+                        FontSize="14"
+                        VerticalOptions="Center"
+                        BackgroundColor="Beige"/>
+
+                    <Button
+                        Text="Create .kml file from .xyz file"
+                        Command="{Binding CreateXYZFileFromKMLFileCommand}"
+                        FontSize="14" />
+
+                    <Button
+                        IsVisible="{Binding FileXYZCreatedExist}"
+                        Text="Open .xyz File"
+                        Command="{Binding OpenXYZFileCreatedCommand}"
+                        FontSize="14" />
+
+                </HorizontalStackLayout>
+                <HorizontalStackLayout
+                    Spacing="5"
+                    Padding="5,5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Label
+                        Text="Status: "
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Text="{Binding StatusCreateXYZ}"
+                        SemanticProperties.HeadingLevel="Level1"
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+        </Border>
+
+    </VerticalStackLayout>
 
 </ContentPage>

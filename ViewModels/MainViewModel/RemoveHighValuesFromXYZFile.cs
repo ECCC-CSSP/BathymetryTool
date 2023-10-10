@@ -2,7 +2,7 @@
 
 public partial class MainViewModel
 {
-    public void RemoveHighValuesFromXYZFile(FileInfo fiXYZ, double highValue)
+    public async Task RemoveHighValuesFromXYZFileAsync(FileInfo fiXYZ, double highValue)
     {
         if (!fiXYZ.Exists)
         {
@@ -39,7 +39,7 @@ public partial class MainViewModel
 
         using (StreamWriter sw = new StreamWriter($"{fiXYZ.FullName.Replace(".xyz", $"_HighValue_{highValue}_Removed.xyz")}"))
         {
-            sw.Write(sb.ToString());
+            await sw.WriteAsync(sb.ToString());
         }
     }
 }

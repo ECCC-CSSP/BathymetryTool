@@ -5,7 +5,7 @@ namespace MainViewModels;
 
 public partial class MainViewModel
 {
-    public void ReduceXYZFileToContainOnlyDataInLocationPolygon(FileInfo fi, List<Coord> poly)
+    public async Task ReduceXYZFileToContainOnlyDataInLocationPolygonAsync(FileInfo fi, List<Coord> poly)
     {
         if (!fi.Exists)
         {
@@ -58,7 +58,7 @@ public partial class MainViewModel
         }
 
         FileInfo fiXYZ = new FileInfo(fiCompact.FullName);
-        ReduceXYZFileDensity(fiXYZ);
+        await ReduceXYZFileDensityAsync(fiXYZ);
 
     }
 }

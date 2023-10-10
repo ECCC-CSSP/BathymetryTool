@@ -2,9 +2,9 @@
 
 public partial class MainViewModel
 {
-    public void CreateXYZFileFromKMLFile(FileInfo fiKML)
+    public async Task CreateXYZFileFromKMLFileAsync(FileInfo fiKML)
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new ();
 
         if (!fiKML.Exists)
         {
@@ -14,7 +14,7 @@ public partial class MainViewModel
             return;
         }
 
-        FileInfo fiXYZ = new FileInfo(fiKML.FullName.Replace(".kml", ".xyz"));
+        FileInfo fiXYZ = new (fiKML.FullName.Replace(".kml", ".xyz"));
         if (fiXYZ.Exists)
         {
             Status = $"File already exist [{fiXYZ.FullName}]";
@@ -29,18 +29,26 @@ public partial class MainViewModel
         {
             if (elem.Name.LocalName == "Placemark")
             {
-                float depth = -999;
+                float depth = -9999;
                 foreach (XElement elem2 in elem.Descendants())
                 {
                     if (elem2.Name.LocalName == "name")
                     {
                         if (elem2.Value.StartsWith("--"))
                         {
-                            depth = float.Parse(elem2.Value.Substring(1));
+                            float depthTemp = -9999;
+                            if (float.TryParse(elem2.Value[1..], out depthTemp))
+                            {
+                                depth = depthTemp;
+                            }
                         }
                         else
                         {
-                            depth = float.Parse(elem2.Value);
+                            float depthTemp = -9999;
+                            if (float.TryParse(elem2.Value, out depthTemp))
+                            {
+                                depth = depthTemp;
+                            }
                         }
                     }
                     if (elem2.Name.LocalName == "coordinates")
@@ -50,8 +58,8 @@ public partial class MainViewModel
 
                         if (coordsTxtList.Count == 5)
                         {
-                            List<float> latList = new List<float>();
-                            List<float> lngList = new List<float>();
+                            List<float> latList = new ();
+                            List<float> lngList = new ();
 
                             foreach (string s in coordsTxtList.Skip(1))
                             {
@@ -73,7 +81,10 @@ public partial class MainViewModel
                             float lat = latList.Average();
                             float lng = lngList.Average();
 
-                            sb.AppendLine(lng.ToString("F6") + "," + lat.ToString("F6") + "," + depth.ToString("F2"));
+                            if (depth != -9999)
+                            {
+                                sb.AppendLine(lng.ToString("F6") + "," + lat.ToString("F6") + "," + depth.ToString("F2"));
+                            }
                         }
                         else
                         {
@@ -89,7 +100,10 @@ public partial class MainViewModel
                                     return;
                                 }
 
-                                sb.AppendLine(float.Parse(pointTxtList[0]).ToString("F6") + "," + float.Parse(pointTxtList[1]).ToString("F6") + "," + depth.ToString("F2"));
+                                if (depth != -9999)
+                                {
+                                    sb.AppendLine(float.Parse(pointTxtList[0]).ToString("F6") + "," + float.Parse(pointTxtList[1]).ToString("F6") + "," + depth.ToString("F2"));
+                                }
                             }
                         }
                     }
@@ -99,9 +113,9 @@ public partial class MainViewModel
 
         //FileInfo fi = new FileInfo(fiKML.FullName.Replace(".kml", ".xyz"));
         StreamWriter sw = fiXYZ.CreateText();
-        sw.Write(sb.ToString());
+        await sw.WriteAsync(sb.ToString());
         sw.Close();
 
-        Status = "Done...";
+        Status = "";
     }
 }

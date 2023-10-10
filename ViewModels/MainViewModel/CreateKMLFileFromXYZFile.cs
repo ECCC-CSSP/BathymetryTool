@@ -2,7 +2,7 @@
 
 public partial class MainViewModel
 {
-    public void CreateKMLFileFromXYZFile(FileInfo fiXYZ)
+    public async Task CreateKMLFileFromXYZFileAsync(FileInfo fiXYZ)
     {
         if (!fiXYZ.Exists)
         {
@@ -44,9 +44,21 @@ public partial class MainViewModel
                 double y = double.Parse(parts[1], CultureInfo.InvariantCulture);
                 double z = double.Parse(parts[2], CultureInfo.InvariantCulture);
 
-                float factor = 0.0001f;
+                float factor = 0.0f;
 
-                if (z > -2)
+                if (z <= -20)
+                {
+                    factor = 0.0003f;
+                }
+                else if (z <= -5)
+                {
+                    factor = 0.0001f;
+                }
+                else if (z <= -2)
+                {
+                    factor = 0.00005f;
+                }
+                else
                 {
                     factor = 0.00005f;
                 }
@@ -78,7 +90,7 @@ public partial class MainViewModel
 
         using (StreamWriter sw = new StreamWriter($"{fiXYZ.FullName.Replace(".xyz", ".kml")}"))
         {
-            sw.Write(sb.ToString());
+            await sw.WriteAsync(sb.ToString());
         }
     }
 }

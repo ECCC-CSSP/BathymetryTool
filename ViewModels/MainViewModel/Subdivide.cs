@@ -2,7 +2,7 @@
 
 public partial class MainViewModel
 {
-    public void Subdivide()
+    public async Task SubdivideAsync()
     {
         DirectoryInfo di = new DirectoryInfo(StartDir);
         StringBuilder sbLog = new StringBuilder();
@@ -100,7 +100,7 @@ public partial class MainViewModel
                             }
 
                             TextWriter w = fiNew.CreateText();
-                            w.WriteLine(sb.ToString());
+                            await w.WriteLineAsync(sb.ToString());
                             w.Close();
 
                             sbLog.AppendLine($"{fiNew.FullName}");

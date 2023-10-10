@@ -2,7 +2,7 @@
 
 public partial class MainViewModel
 {
-    public void FixKMLFileByRemovingAbsoluteLine(DirectoryInfo startDir)
+    public async Task FixKMLFileByRemovingAbsoluteLineAsync(DirectoryInfo startDir)
     {
         #region checking function parameters
         if (startDir == null)
@@ -56,7 +56,7 @@ public partial class MainViewModel
 
                 FileInfo fi = new FileInfo(fiKMLBlock.FullName);
                 StreamWriter sw = fi.CreateText();
-                sw.Write(sb.ToString());
+                await sw.WriteAsync(sb.ToString());
                 sw.Close();
             }
         }

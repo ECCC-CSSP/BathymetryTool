@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MainViewModels;
+﻿namespace MainViewModels;
 
 public partial class MainViewModel
 {
@@ -423,7 +417,5 @@ public partial class MainViewModel
         sb.AppendLine($"			<width>1</width>");
         sb.AppendLine($"		</PolyStyle>");
         sb.AppendLine($"	</Style>");
-
-
     }
 }

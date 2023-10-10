@@ -1,12 +1,8 @@
-﻿using System.Globalization;
-using System.Xml;
-using WinRT;
-
-namespace MainViewModels;
+﻿namespace MainViewModels;
 
 public partial class MainViewModel
 {
-    public void ReduceXYZFileDensity(FileInfo fi)
+    public async Task ReduceXYZFileDensityAsync(FileInfo fi)
     {
         if (!fi.Exists)
         {
@@ -17,43 +13,43 @@ public partial class MainViewModel
 
         LatLngFileCount latLngFileCount = GetLatLngFileCountFromFileInfo(fi);
 
-        List<XYZ> xyzList = new List<XYZ>();
+        List<XYZ> xyzList = new ();
 
-        List<ColorVal> ColorValList = new List<ColorVal>();
+        List<ColorVal> ColorValList = new ();
         ColorValList = FillColorValues();
 
         if (fi.DirectoryName != null)
         {
-            DirectoryInfo di = new DirectoryInfo(fi.DirectoryName + "\\xyz\\");
+            DirectoryInfo di = new (fi.DirectoryName + "\\xyz\\");
             if (!di.Exists)
             {
                 try
                 {
                     di.Create();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
             }
-            di = new DirectoryInfo(fi.DirectoryName + "\\kml\\");
+            di = new (fi.DirectoryName + "\\kml\\");
             if (!di.Exists)
             {
                 try
                 {
                     di.Create();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
             }
         }
 
-        StringBuilder sb = new StringBuilder();
-        StringBuilder sbHtml = new StringBuilder();
+        StringBuilder sb = new ();
+        StringBuilder sbHtml = new ();
 
-        using (StreamReader sr = new StreamReader($"{fi.FullName}"))
+        using (StreamReader sr = new ($"{fi.FullName}"))
         {
             string? line;
             while ((line = sr.ReadLine()) != null)
@@ -77,9 +73,9 @@ public partial class MainViewModel
         float subSize = 0.005f;
 
         int count = 0;
-        for (float lat = latLngFileCount.Lat1; lat <= latLngFileCount.Lat2; lat = lat + subSize)
+        for (float lat = latLngFileCount.Lat1; lat <= latLngFileCount.Lat2; lat += subSize)
         {
-            for (float lng = latLngFileCount.Lng1; lng <= latLngFileCount.Lng2; lng = lng + subSize)
+            for (float lng = latLngFileCount.Lng1; lng <= latLngFileCount.Lng2; lng += subSize)
             {
                 List<XYZ> xyzListSub = (from c in xyzList
                                         where (c.y >= lat
@@ -128,9 +124,9 @@ public partial class MainViewModel
                     {
                         float subSubSize = 0.001f;
 
-                        for (float lat2 = lat; lat2 <= lat + subSize; lat2 = lat2 + subSubSize)
+                        for (float lat2 = lat; lat2 <= lat + subSize; lat2 += subSubSize)
                         {
-                            for (float lng2 = lng; lng2 <= lng + subSize; lng2 = lng2 + subSubSize)
+                            for (float lng2 = lng; lng2 <= lng + subSize; lng2 += subSubSize)
                             {
                                 List<XYZ> xyzListSubSub = (from c in xyzListSub
                                                            where (c.y >= lat2
@@ -177,9 +173,9 @@ public partial class MainViewModel
                                     {
                                         float subSubSubSize = 0.0005f;
 
-                                        for (float lat3 = lat2; lat3 <= lat2 + subSubSize; lat3 = lat3 + subSubSubSize)
+                                        for (float lat3 = lat2; lat3 <= lat2 + subSubSize; lat3 += subSubSubSize)
                                         {
-                                            for (float lng3 = lng2; lng3 <= lng2 + subSubSize; lng3 = lng3 + subSubSubSize)
+                                            for (float lng3 = lng2; lng3 <= lng2 + subSubSize; lng3 += subSubSubSize)
                                             {
                                                 List<XYZ> xyzListSubSubSub = (from c in xyzListSubSub
                                                                               where (c.y >= lat3
@@ -236,7 +232,7 @@ public partial class MainViewModel
             }
         }
 
-        string fileName = fi.Name.Substring(0, fi.Name.LastIndexOf("_")) + $"_{count}.xyz";
+        string fileName = fi.Name[..fi.Name.LastIndexOf("_")] + $"_{count}.xyz";
 
         try
         {
@@ -254,23 +250,23 @@ public partial class MainViewModel
 
         string fullFileName = fi.DirectoryName + "\\xyz\\" + fileName;
 
-        StringBuilder sbFinal = new StringBuilder();
+        StringBuilder sbFinal = new ();
         CreateTopKMLPart(sbFinal, fileName.Replace("xyz", "kml"));
         sbFinal.AppendLine($"	<Folder>");
         sbFinal.AppendLine($"		<name>{fileName.Replace("xyz", "kml")}</name>");
         sbFinal.AppendLine(sbHtml.ToString());
 
 
-        using (StreamWriter sw = new StreamWriter(fullFileName))
+        using (StreamWriter sw = new (fullFileName))
         {
-            sw.Write(sb.ToString());
+            await sw.WriteAsync(sb.ToString());
         }
 
         fullFileName = fi.DirectoryName + "\\kml\\" + fileName.Replace("xyz", "kml");
 
-        using (StreamWriter sw = new StreamWriter(fullFileName))
+        using (StreamWriter sw = new (fullFileName))
         {
-            sw.Write(sbFinal.ToString());
+            await sw.WriteAsync(sbFinal.ToString());
         }
     }
 }

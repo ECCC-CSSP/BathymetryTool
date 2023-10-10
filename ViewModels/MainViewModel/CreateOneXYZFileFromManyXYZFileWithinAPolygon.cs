@@ -2,7 +2,7 @@
 
 public partial class MainViewModel
 {
-    public void CreateOneXYZFileFromManyXYZFileWithinAPolygon(DirectoryInfo startDir, string fileNameToCreate, string kmlOfPolygon)
+    public async Task CreateOneXYZFileFromManyXYZFileWithinAPolygonAsync(DirectoryInfo startDir, string fileNameToCreate, string kmlOfPolygon)
     {
         StringBuilder sb = new StringBuilder();
         List<Coord> poly = new List<Coord>();
@@ -20,7 +20,7 @@ public partial class MainViewModel
         {
             Status = $"startDir does not exist [{startDir.FullName}]";
             Log = Status;
-            
+
             return;
         }
 
@@ -30,7 +30,7 @@ public partial class MainViewModel
         {
             Status = $"File already exist [{startDir.FullName}]";
             Log = Status;
-                
+
             return;
         }
 
@@ -38,7 +38,7 @@ public partial class MainViewModel
         {
             Status = $"File extension is not .xyz [{startDir.FullName}]";
             Log = Status;
-                
+
             return;
         }
 
@@ -148,7 +148,6 @@ public partial class MainViewModel
                 }
                 else if (CountCoordInPoly > 0)
                 {
-                    // should take the only the points that falls within poly transfer these points to sb
                     FileInfo fiXYZBlock = new FileInfo(latLngFileCount.FileName);
                     if (!fiXYZBlock.Exists)
                     {
@@ -181,16 +180,60 @@ public partial class MainViewModel
                 }
                 else
                 {
-                    // nothing here as all 4 points fall outside the polygon
+                    bool polyPoinInFileName = false;
+                    foreach(Coord coord in poly)
+                    {
+                        if (latLngFileCount.Lng1 <= coord.Lng && latLngFileCount.Lng2 >= coord.Lng)
+                        {
+                            if (latLngFileCount.Lat1 <= coord.Lat && latLngFileCount.Lat2 >= coord.Lat)
+                            {
+                                polyPoinInFileName = true;
+                            }
+                        }
+                    }
+
+                    if (polyPoinInFileName)
+                    {
+                        FileInfo fiXYZBlock = new FileInfo(latLngFileCount.FileName);
+                        if (!fiXYZBlock.Exists)
+                        {
+                            Log = $"Error: fiXYZBlock does not exist [{fiXYZBlock.FullName}]";
+                            Status = $"Error: fiXYZBlock does not exist [{fiXYZBlock.FullName}]";
+                            return;
+                        }
+
+                        using (StreamReader sr = new StreamReader(fiXYZBlock.FullName))
+                        {
+                            string? line;
+                            while ((line = sr.ReadLine()) != null)
+                            {
+                                if (line.Trim().Length > 0)
+                                {
+                                    List<string> lineList = line.Trim().Split(",").ToList();
+                                    if (lineList.Count < 3)
+                                    {
+                                        continue;
+                                    }
+                                    Coord coord = new Coord() { Lat = float.Parse(lineList[1]), Lng = float.Parse(lineList[0]) };
+
+                                    if (CoordInPolygon(poly, coord))
+                                    {
+                                        sb.AppendLine(line);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
                 }
             }
         }
 
         FileInfo fi = new FileInfo(startDir.FullName + "\\" + fileNameToCreate);
         StreamWriter sw = fi.CreateText();
-        sw.Write(sb.ToString());
+        await sw.WriteAsync(sb.ToString());
         sw.Close();
 
-        Status = "Done...";
+        Status = "";
     }
 }

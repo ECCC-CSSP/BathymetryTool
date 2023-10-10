@@ -3,7 +3,7 @@ namespace MainViewModelTests;
 public partial class MainViewModelTest
 {
     [Fact]
-    public void CreateXYZFileFromKMLFile_OK()
+    public async Task CreateXYZFileFromKMLFileAsync_OK()
     {
         SetupStart();
 
@@ -22,7 +22,7 @@ public partial class MainViewModelTest
             }
         }
 
-        vm.CreateXYZFileFromKMLFile(fiKML);
+        await vm.CreateXYZFileFromKMLFileAsync(fiKML);
 
         Assert.Empty(vm.Log);
 
@@ -33,13 +33,13 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void CreateXYZFileFromKMLFile_Error_File_Does_Not_Exist()
+    public async Task CreateXYZFileFromKMLFileAsync_Error_File_Does_Not_Exist()
     {
         SetupStart();
 
         FileInfo fiKML = new FileInfo("E:\\Bathymetry\\CHS_High_Res\\Data\\sub_xyz\\Grand Manan\\kml\\44_5-66_7_422_Does_Not_Exist.kml");
 
-        vm.CreateXYZFileFromKMLFile(fiKML);
+        await vm.CreateXYZFileFromKMLFileAsync(fiKML);
 
         Assert.NotEmpty(vm.Log);
 
@@ -48,7 +48,7 @@ public partial class MainViewModelTest
     }
 
     [Fact]
-    public void CreateXYZFileFromKMLFile_Error_File_Already_Exist()
+    public async Task CreateXYZFileFromKMLFileAsync_Error_File_Already_Exist()
     {
         SetupStart();
 
@@ -67,8 +67,8 @@ public partial class MainViewModelTest
             }
         }
 
-        vm.CreateXYZFileFromKMLFile(fiKML);
-        vm.CreateXYZFileFromKMLFile(fiKML);
+        await vm.CreateXYZFileFromKMLFileAsync(fiKML);
+        await vm.CreateXYZFileFromKMLFileAsync(fiKML);
 
         Assert.NotEmpty(vm.Log);
 
